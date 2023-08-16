@@ -41,8 +41,7 @@ public:
 
 private:
     QString cestaMapa="";
-
-
+    static QString escapePoznamek(QString vstup) ;
 };
 
 

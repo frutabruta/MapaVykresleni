@@ -154,7 +154,7 @@ MapaBod MapaVykresleni::zastavkaCilToMapaBod(ZastavkaCil polozka, QString kapka)
     foreach(QString poznamka, polozka.zastavka.seznamPoznamek)
     {
         vystup.obsah+="<tr>";
-        vystup.obsah+="<td>poznámka</td><td> "+poznamka+"</td>";
+        vystup.obsah+="<td>poznámka</td><td> "+escapePoznamek(poznamka)+"</td>";
         vystup.obsah+="</tr>";
     }
 
@@ -218,6 +218,15 @@ QString MapaVykresleni::uzelDoTabulky(Zastavka vstup)
 QString MapaVykresleni::getCestaMapa() const
 {
     return cestaMapa;
+}
+
+
+QString MapaVykresleni::escapePoznamek(QString vstup)
+{
+    vstup=vstup.replace("\\","");
+    vstup=vstup.replace("\"","");
+
+    return vstup ;
 }
 
 void MapaVykresleni::setCestaMapa(const QString &newCestaMapa)
