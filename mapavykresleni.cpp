@@ -76,9 +76,9 @@ void MapaVykresleni::seznamMnozinDoJson(QVector<MnozinaBodu> seznamMnozin,  QStr
 
     //   qDebug().noquote() << doc.toJson();
 
-    qstringDoSouboru(cestaMapa+"/data.js","var dataj='"+doc.toJson(QJsonDocument::Compact)+"';");
+    qstringDoSouboru(mHtmlResultPath+"/data.js","var dataj='"+doc.toJson(QJsonDocument::Compact)+"';");
 
-    QDesktopServices::openUrl(QUrl::fromLocalFile(cestaMapa+"/mapa.html"));
+    QDesktopServices::openUrl(QUrl::fromLocalFile(mHtmlResultPath+"/mapa.html"));
 }
 
 
@@ -90,17 +90,17 @@ QString MapaVykresleni::htmlTag(QString vstup, QString tag)
 
 
 
-QString MapaVykresleni::getCestaMapa() const
+QString MapaVykresleni::getHtmlResultPath() const
 {
-    return cestaMapa;
+    return mHtmlResultPath;
 }
 
 
 
 
-void MapaVykresleni::setCestaMapa(const QString &newCestaMapa)
+void MapaVykresleni::setHtmlResultPath(const QString &htmlResultPath)
 {
-    cestaMapa = newCestaMapa;
+    mHtmlResultPath = htmlResultPath;
 }
 
 

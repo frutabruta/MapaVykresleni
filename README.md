@@ -1,6 +1,8 @@
 # MapaVykresleni
 
 ## Changelog:
+- 2024-06-07_2
+    - cestaMapa renamed to mHtmlResultPath
 - 2024-06-07
     - new submodule 
         - VDV301DataStructures

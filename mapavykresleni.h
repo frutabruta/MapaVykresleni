@@ -35,11 +35,11 @@ public:
 
 
 
-    QString getCestaMapa() const;
-    void setCestaMapa(const QString &newCestaMapa);
+    QString getHtmlResultPath() const;
+    void setHtmlResultPath(const QString &htmlResultPath);
 
 private:
-    QString cestaMapa="";
+    QString mHtmlResultPath="";
 
 };
 
