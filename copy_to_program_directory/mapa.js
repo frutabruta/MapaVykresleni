@@ -64,8 +64,29 @@ for (var k = 0; k < znackyPole.length; k++) {
 
             /* vyrobit znacku */
             var rodic = JAK.mel("div");
-            var obrazek = JAK.mel("img", { src: SMap.CONFIG.img + "/marker/drop-red.png" });
-            rodic.appendChild(obrazek);
+
+            if(cardData.color=="#ff0000")
+            {
+                var obrazek = JAK.mel("img", { src: SMap.CONFIG.img + "/marker/drop-red.png" });
+                rodic.appendChild(obrazek);
+            }
+            else if(cardData.color=="#0000ff")
+            {
+                var obrazek = JAK.mel("img", { src: SMap.CONFIG.img + "/marker/drop-blue.png" });
+                rodic.appendChild(obrazek);
+            }
+            else if(cardData.color=="#ffff00")
+            {
+                var obrazek = JAK.mel("img", { src: SMap.CONFIG.img + "/marker/drop-yellow.png" });
+                rodic.appendChild(obrazek);
+            }
+            else
+            {
+                var obrazek = JAK.mel("img", { src: SMap.CONFIG.img + "/marker/drop-red.png" });
+                rodic.appendChild(obrazek);
+            }
+
+           
 
             var popisek = JAK.mel("div", {}, { position: "absolute", left: "0px", top: "2px", textAlign: "center", width: "22px", color: "white", fontWeight: "bold" });
             popisek.innerHTML = cardData.kapka;

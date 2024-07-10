@@ -1,4 +1,5 @@
 #include "mapyapistops.h"
+#include <QColor>
 
 MapyApiStops::MapyApiStops() {}
 
@@ -119,6 +120,10 @@ MapaBod MapyApiStops::zastavkaCilToMapaBod(StopPointDestination polozka, QString
     vystup.lng=polozka.stopPoint.lng;
     vystup.radius=polozka.stopPoint.radius;
     vystup.kapka=kapka;
+    if(polozka.stopPoint.isViapoint)
+    {
+        vystup.barva=QColor::fromRgb(0,0,255);
+    }
 
     return vystup;
 }

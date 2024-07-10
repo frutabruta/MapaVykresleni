@@ -61,6 +61,7 @@ void MapaVykresleni::seznamMnozinDoJson(QVector<MnozinaBodu> seznamMnozin,  QStr
             recordObject.insert("lng", QJsonValue::fromVariant(polozkaZastavka.lng));
             recordObject.insert("radius", QJsonValue::fromVariant(polozkaZastavka.radius));
             recordObject.insert("kapka", QJsonValue::fromVariant(polozkaZastavka.kapka ));
+            recordObject.insert("color", QJsonValue::fromVariant(polozkaZastavka.barva ));
             radkyJSonArray.append(recordObject);
 
         }
