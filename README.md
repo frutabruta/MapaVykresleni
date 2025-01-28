@@ -1,6 +1,9 @@
 # MapaVykresleni
 
 ## Changelog:
+- 2025-01-28
+    - switch to Leaflet + OSM from Mapy.cz
+    - moved JS files to a folder
 - 2024-07-10
     - viapoints now have blue markers (requirement from RopidXmlTools development)
         - MapaBod

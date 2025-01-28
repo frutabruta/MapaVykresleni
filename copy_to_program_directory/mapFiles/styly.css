@@ -1,0 +1,62 @@
+*{
+    	font-family: sans-serif;   
+}
+
+body{
+   	margin: 0;
+}
+
+
+#map{
+	width:100%;
+	height:100vh;
+}
+
+#boxik {
+	position: absolute;
+	left: 8px;
+	top: 8px;
+	background-color: white;
+	color: black;
+	padding: 10px;
+}
+
+
+.popisBodu{
+	position: "absolute"; 
+	left: "0px"; top: "2px"; 
+	text-align: "center";
+	width: "22px";
+	color: "white"; 
+	font-weight: "bold";
+}
+
+h1{
+font-size: 20px;
+}
+
+.markerCss{
+/*background-color: brown;*/
+}
+
+.innerDiv{
+	/*
+	mask-image: url("map-marker-svgrepo-com.svg");
+	mask-repeat: no-repeat;
+	mask-size: 40px 40px;
+	*/
+	background-image: url("map-marker-svgrepo-com.svg");
+	background-repeat: no-repeat;
+	background-size: 40px 40px;
+	fill:#ff00ff;
+	color:white;
+	/*background-color: aqua;*/
+	font-weight: bold;
+	text-align: center;
+	font-size: 15pt;
+	width: 40px;
+	height: 40px;
+	position: relative;
+    top:-30px;
+	right:15px;
+}
