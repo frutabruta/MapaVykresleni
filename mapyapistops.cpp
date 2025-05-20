@@ -9,7 +9,7 @@ QVector<MapaBod> MapyApiStops::seznamStopPointDestinationToSeznamMapaBod(QVector
     QVector<MapaBod> vystup;
     int counter=1;
 
-    foreach(StopPointDestination polozka, seznamZastavek)
+    for(const StopPointDestination &polozka : seznamZastavek)
     {
         QString kapka="";
         if(poradi)
@@ -98,7 +98,7 @@ MapaBod MapyApiStops::zastavkaCilToMapaBod(StopPointDestination polozka, QString
     vystup.obsah+="</tr>";
 
     qDebug()<<"pocet poznamek:"<<QString::number(polozka.stopPoint.notesList.count());
-    foreach(QString poznamka, polozka.stopPoint.notesList)
+    for(const QString &poznamka : polozka.stopPoint.notesList)
     {
         vystup.obsah+="<tr>";
         vystup.obsah+="<td>poznámka</td><td> "+escapePoznamek(poznamka)+"</td>";

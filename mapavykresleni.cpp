@@ -33,7 +33,7 @@ void MapaVykresleni::seznamMnozinDoJson(QVector<MnozinaBodu> seznamMnozin,  QStr
 
 
 
-    foreach(MnozinaBodu polozkaMnozina, seznamMnozin)
+    for(MnozinaBodu polozkaMnozina : seznamMnozin)
     {
         QJsonObject jPolozka;
         jPolozka.insert("vykresliBody", QJsonValue::fromVariant(polozkaMnozina.vykresliBody));
