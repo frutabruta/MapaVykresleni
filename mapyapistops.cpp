@@ -120,6 +120,7 @@ MapaBod MapyApiStops::zastavkaCilToMapaBod(StopPointDestination polozka, QString
     vystup.lng=polozka.stopPoint.lng;
     vystup.radius=polozka.stopPoint.radius;
     vystup.kapka=kapka;
+    vystup.isStop=true;
     if(polozka.stopPoint.isViapoint)
     {
         vystup.barva=QColor::fromRgb(0,0,255);
