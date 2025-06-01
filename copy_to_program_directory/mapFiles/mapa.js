@@ -1,5 +1,40 @@
 
 
+let marker = null;
+
+var converter = new JTSK_Converter();
+
+const socket = new WebSocket("ws://localhost:12345");
+
+socket.onmessage = function(event) {
+    const data = JSON.parse(event.data);
+    var lat = data.latitude;
+    var lon = data.longitude;
+    const coordinateSystem = data.coordinate_system;
+
+    if(coordinateSystem=="J_STSK")
+    {
+            var wgs = converter.JTSKtoWGS84(data.longitude, data.latitude); // returns object {'lat', 'lon'}
+            lon=wgs.lon;
+            lat=wgs.lat;
+            console.log(wgs);
+    }
+
+
+
+    if (marker === null) {
+        // Create the marker the first time
+        marker = L.marker([lat, lon]).addTo(map);
+    } else {
+        // Update the marker's position
+        marker.setLatLng([lat, lon]);
+    }
+};
+
+
+
+
+
 var map = L.map('map').setView([50.08, 14.41], 13);
 // Set up the OSM layer
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -48,7 +83,7 @@ var redIcon = new L.Icon({
   
  
 
-var converter = new JTSK_Converter();
+
 var wgs = converter.JTSKtoWGS84(1104335.13, 707849.38); // returns object {'lat', 'lon'}
 
 //konverze souradnic 
