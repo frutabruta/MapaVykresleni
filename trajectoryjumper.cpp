@@ -22,6 +22,7 @@ void TrajectoryJumper::start()
     else
     {
         timerJumptoNextPoint.start();
+        isRunning=true;
     }
 
 }
@@ -32,6 +33,7 @@ void TrajectoryJumper::stop()
     iterator=0;
     timerJumptoNextPoint.stop();
     timerStayAtStop.stop();
+    isRunning=false;
 }
 
 
@@ -39,29 +41,63 @@ void TrajectoryJumper::stop()
 
 void TrajectoryJumper::slotUpdatePosition()
 {
-    if(iterator<seznamMapaBodu.length())
+
+    if(!currentPointBuffer.isEmpty())
     {
-        currentMapaBod=seznamMapaBodu.at(iterator);
-        gnssWebSockerServer.setData(currentMapaBod.lat,currentMapaBod.lng,MnozinaBodu::J_STSK);
-        emit signalMapaBod(currentMapaBod);
-         iterator++;
+
+        MapaBod currentSubPoint=currentPointBuffer.takeFirst();
+        gnssWebSockerServer.setData(currentSubPoint.lat,currentSubPoint.lng,MnozinaBodu::J_STSK, centerMap);
+        emit signalMapaBod(currentSubPoint);
+
         if(stopAtStops)
         {
-            if(currentMapaBod.isStop )
+            if(currentSubPoint.isStop )
             {
                 arrivedAtStop();
             }
         }
-
-
+        else
+        {
+           // departedFromStop();
+        }
 
 
 
     }
     else
     {
-        timerJumptoNextPoint.stop();
+        if(iterator<seznamMapaBodu.length())
+        {
+
+            currentMapaBod=seznamMapaBodu.at(iterator);
+
+            if((iterator+1)<seznamMapaBodu.count())
+            {
+                nextMapaBod=seznamMapaBodu.at(iterator+1);
+                currentPointBuffer=coordinatesTools.interpolatePoints(currentMapaBod,nextMapaBod,10);
+                currentPointBuffer.append(nextMapaBod);
+                iterator++;
+
+            }
+            else
+            {
+                qDebug()<<"next point out of range";
+                stop();
+            }
+
+
+        }
+        else
+        {
+            timerJumptoNextPoint.stop();
+            qDebug()<<"this point out of range";
+            stop();
+        }
+
+
     }
+
+
 }
 
 void TrajectoryJumper::arrivedAtStop()

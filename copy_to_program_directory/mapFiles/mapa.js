@@ -1,49 +1,3 @@
-
-
-let marker = null;
-
-var converter = new JTSK_Converter();
-
-const socket = new WebSocket("ws://localhost:12345");
-
-socket.onmessage = function(event) {
-    const data = JSON.parse(event.data);
-    var lat = data.latitude;
-    var lon = data.longitude;
-    const coordinateSystem = data.coordinate_system;
-
-    if(coordinateSystem=="J_STSK")
-    {
-            var wgs = converter.JTSKtoWGS84(data.longitude, data.latitude); // returns object {'lat', 'lon'}
-            lon=wgs.lon;
-            lat=wgs.lat;
-            console.log(wgs);
-    }
-
-
-
-    if (marker === null) {
-        // Create the marker the first time
-        marker = L.marker([lat, lon]).addTo(map);
-    } else {
-        // Update the marker's position
-        marker.setLatLng([lat, lon]);
-    }
-};
-
-
-
-
-
-var map = L.map('map').setView([50.08, 14.41], 13);
-// Set up the OSM layer
-L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-}).addTo(map);
-
-
-
 var redIcon = new L.Icon({
     iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
     shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
@@ -79,6 +33,66 @@ var redIcon = new L.Icon({
     popupAnchor: [1, -34],
     shadowSize: [41, 41]
   });
+
+
+
+
+
+let marker = null;
+
+var converter = new JTSK_Converter();
+
+const socket = new WebSocket("ws://localhost:12345");
+
+socket.onmessage = function(event) {
+    const data = JSON.parse(event.data);
+    console.log(data);
+    var lat = data.latitude;
+    var lon = data.longitude;
+    var centerMap=data.center_map;
+    const coordinateSystem = data.coordinate_system;
+
+    if(coordinateSystem=="J_STSK")
+    {
+            var wgs = converter.JTSKtoWGS84(Math.abs(data.longitude), Math.abs(data.latitude)); // returns object {'lat', 'lon'}
+            lon=wgs.lon;
+            lat=wgs.lat;
+           // console.log(wgs);
+    }
+
+
+
+    if (marker === null) {
+        // Create the marker the first time
+        marker = L.marker([lat, lon], {icon: greenIcon}).addTo(map);
+    } else {
+        // Update the marker's position
+        marker.setLatLng([lat, lon]);
+    }
+
+    if(centerMap)
+    {
+    map.setView([lat, lon], 18);
+    }
+
+
+
+};
+
+
+
+
+
+var map = L.map('map').setView([50.08, 14.41], 13);
+// Set up the OSM layer
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+}).addTo(map);
+
+
+
+
   
   
  
@@ -138,7 +152,7 @@ for (var k = 0; k < znackyPole.length; k++) {
                // coords2osm=[coords2osm[0], coords2osm[1]   ];
                 
 
-                var wgs84 = converter.JTSKtoWGS84(cardData.lng, cardData.lat); // returns object {'x', 'y'}
+                var wgs84 = converter.JTSKtoWGS84(Math.abs(cardData.lng), Math.abs(cardData.lat)); // returns object {'x', 'y'}
                 console.log("wgs84");
                 console.log(wgs84);
                 coords2osm =  wgs84; //[wgs84.x, wgs84.y];

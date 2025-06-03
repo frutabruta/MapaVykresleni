@@ -5,6 +5,7 @@
 
 #include "mapabod.h"
 #include "gnsswebsocketserver.h"
+#include "coordinatestools.h"
 
 class TrajectoryJumper : public QObject
 {
@@ -13,19 +14,35 @@ public:
     TrajectoryJumper();
 
 
+
+    GNSSWebSocketServer gnssWebSockerServer;
+    CoordinatesTools coordinatesTools;
+
     QVector<MapaBod> seznamMapaBodu;
+
     MapaBod currentMapaBod;
+    MapaBod nextMapaBod;
+
     void start();
     int iterator=0;
     bool stopAtStops=true;
     int stopWaitTime=10000; //wait time in seconds
     int skipSegmentTime=1000;
 
-    GNSSWebSocketServer gnssWebSockerServer;
+    bool isRunning=false;
+
+    bool centerMap=true;
+
+
+
 
 
     QTimer timerJumptoNextPoint;
     QTimer timerStayAtStop;
+
+    QVector<MapaBod> currentPointBuffer;
+
+
 
     void stop();
 public slots:

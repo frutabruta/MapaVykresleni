@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <QColor>
+#include <QPointF>
 
 class MapaBod
 {
@@ -16,6 +17,7 @@ public:
     double lng=0.0;
     int radius=0;
     bool isStop=false;
+    QPointF toQPointF();
 };
 
 #endif // MAPABOD_H

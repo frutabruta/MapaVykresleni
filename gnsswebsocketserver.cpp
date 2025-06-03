@@ -34,6 +34,7 @@ void GNSSWebSocketServer::sendGnssData() {
     QJsonObject gnssData;
     gnssData["latitude"]= latitude;
     gnssData["longitude"] = longitude;
+    gnssData["center_map"] = centerMap;
 
     if(souradnicovySystem==MnozinaBodu::J_STSK)
     {
@@ -54,11 +55,12 @@ void GNSSWebSocketServer::sendGnssData() {
     }
 }
 
-void GNSSWebSocketServer::setData(float newLatitude, float newLongitude,MnozinaBodu::SouradnicovySystem newCoordinateSystem)
+void GNSSWebSocketServer::setData(float newLatitude, float newLongitude,MnozinaBodu::SouradnicovySystem newCoordinateSystem, bool newCenterMap)
 {
     latitude=newLatitude;
     longitude=newLongitude;
     souradnicovySystem=newCoordinateSystem;
+    centerMap=newCenterMap;
     sendGnssData();
 }
 
