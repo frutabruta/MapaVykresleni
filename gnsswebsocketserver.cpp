@@ -48,7 +48,9 @@ void GNSSWebSocketServer::sendGnssData() {
     QJsonDocument doc(gnssData);
     QString jsonString = doc.toJson(QJsonDocument::Compact);
 
-    for (QWebSocket *client : std::as_const(clients)) {
+
+   // for (QWebSocket *client : std::as_const(clients)) {  // didnt work for qt5
+    for (QWebSocket *client : clients) {
         if (client->isValid()) {
             client->sendTextMessage(jsonString);
         }
