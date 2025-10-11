@@ -116,8 +116,8 @@ MapaBod MapyApiStops::zastavkaCilToMapaBod(StopPointDestination polozka, QString
     vystup.obsah+="odjezd: "+polozka.stopPoint.odjezdQTime().toString("h:mm:ss")+"<br>";
 */
     vystup.hlavicka="<b>"+polozka.stopPoint.StopName+" "+priznaky+"</b>";
-    vystup.lat=polozka.stopPoint.lat;
-    vystup.lng=polozka.stopPoint.lng;
+    vystup.x=polozka.stopPoint.lat;
+    vystup.y=polozka.stopPoint.lng;
     vystup.radius=polozka.stopPoint.radius;
     vystup.kapka=kapka;
     vystup.isStop=true;

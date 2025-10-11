@@ -3,6 +3,13 @@ Qt library to generate HTML map file from supplied coordinates, using Leaflet an
 Supports receiving real-time drawing of current position using websocket on port 12345. 
 
 ## Changelog:
+- 20251012_0021
+  - MapaBod
+    - original lat and lng renamed to x and y, added new lat and lng
+  - MapaVykresleni::seznamMnozinDoJson
+    - automatic detection of coordinate system and override
+  - MnozinaBodu
+    - SouradnicovySystem J_STSK changed to S_JTSK
 
 - 20250615_2248
     - GNSSWebSocketServer::sendGnssData

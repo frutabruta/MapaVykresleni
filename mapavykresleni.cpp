@@ -40,9 +40,44 @@ void MapaVykresleni::seznamMnozinDoJson(QVector<MnozinaBodu> seznamMnozin,  QStr
         jPolozka.insert("vykresliSpojnici", QJsonValue::fromVariant(polozkaMnozina.vykresliSpojnici));
         jPolozka.insert("vykresliTrasu", QJsonValue::fromVariant(polozkaMnozina.vykresliTrasu));
         jPolozka.insert("vykresliRadius", QJsonValue::fromVariant(polozkaMnozina.vykresliRadius));
-        if(polozkaMnozina.souradnicovySystem==MnozinaBodu::J_STSK)
+
+        if(!polozkaMnozina.seznamMapaBodu.isEmpty())
         {
-            jPolozka.insert("souradnicovySystem", QJsonValue::fromVariant("J_STSK"));
+            if(polozkaMnozina.seznamMapaBodu.first().x==0.0)
+            {
+                if(polozkaMnozina.seznamMapaBodu.first().lat==0.0)
+                {
+                    if(polozkaMnozina.souradnicovySystem==MnozinaBodu::WGS84)
+                    {
+                        qDebug()<<"invalid coordinates, keeping WGS84";
+                    }
+                    else
+                    {
+                        qDebug()<<"invalid coordinates, keeping S_JTSK";
+                    }
+                }
+                else
+                {
+                    qDebug()<<"coordinates override to WGS84";
+                    polozkaMnozina.souradnicovySystem=MnozinaBodu::WGS84;
+                }
+            }
+            else
+            {
+                qDebug()<<"coordinates override to S_JTSK";
+                polozkaMnozina.souradnicovySystem=MnozinaBodu::S_JTSK;
+            }
+
+        }
+        else
+        {
+            qDebug()<<"empty point list";
+        }
+
+
+        if(polozkaMnozina.souradnicovySystem==MnozinaBodu::S_JTSK)
+        {
+            jPolozka.insert("souradnicovySystem", QJsonValue::fromVariant("S_JTSK"));
         }
         else
         {
@@ -53,12 +88,23 @@ void MapaVykresleni::seznamMnozinDoJson(QVector<MnozinaBodu> seznamMnozin,  QStr
 
         foreach(MapaBod polozkaZastavka, polozkaMnozina.seznamMapaBodu)
         {
-
             QJsonObject recordObject;
             recordObject.insert("title", QJsonValue::fromVariant(polozkaZastavka.hlavicka));
             recordObject.insert("cont", QJsonValue::fromVariant(polozkaZastavka.obsah));
-            recordObject.insert("lat", QJsonValue::fromVariant(polozkaZastavka.lat));
-            recordObject.insert("lng", QJsonValue::fromVariant(polozkaZastavka.lng));
+
+            if(polozkaMnozina.souradnicovySystem==MnozinaBodu::WGS84)
+            {
+                recordObject.insert("lat", QJsonValue::fromVariant(polozkaZastavka.lat));
+                recordObject.insert("lng", QJsonValue::fromVariant(polozkaZastavka.lng));
+
+            }
+            else
+            {
+                recordObject.insert("lat", QJsonValue::fromVariant(polozkaZastavka.x));
+                recordObject.insert("lng", QJsonValue::fromVariant(polozkaZastavka.y));
+            }
+
+
             recordObject.insert("radius", QJsonValue::fromVariant(polozkaZastavka.radius));
             recordObject.insert("kapka", QJsonValue::fromVariant(polozkaZastavka.kapka ));
             recordObject.insert("color", QJsonValue::fromVariant(polozkaZastavka.barva ));
@@ -124,7 +170,7 @@ void MapaVykresleni::qstringDoSouboru(QString cesta, QString obsah)
         //Qt5
         out.setCodec("UTF-8");
 #else
-         //Qt6
+        //Qt6
         out.setAutoDetectUnicode(true);
         out.setEncoding(QStringConverter::Utf8);
 #endif
