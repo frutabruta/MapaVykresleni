@@ -52,7 +52,7 @@ socket.onmessage = function(event) {
     var centerMap=data.center_map;
     const coordinateSystem = data.coordinate_system;
 
-    if(coordinateSystem=="J_STSK")
+    if(coordinateSystem=="S_JTSK")
     {
             var wgs = converter.JTSKtoWGS84(Math.abs(data.longitude), Math.abs(data.latitude)); // returns object {'lat', 'lon'}
             lon=wgs.lon;
@@ -228,6 +228,11 @@ for (var k = 0; k < znackyPole.length; k++) {
         
             if (znackyPole[k].vykresliSpojnici) {
                 var polyline = L.polyline(lineCoordsOsm, {color: 'red'}).addTo(map);
+              //  map.fitBounds(polyline.getBounds());
+            }
+
+            if (znackyPole[k].vykresliPolygon) {
+                var polygon = L.polygon(lineCoordsOsm, {color: 'green'}).addTo(map);
               //  map.fitBounds(polyline.getBounds());
             }
      

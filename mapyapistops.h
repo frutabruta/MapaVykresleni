@@ -15,6 +15,7 @@ public:
     QString spojDoTabulky(Trip vstup);
     QString uzelDoTabulky(StopPoint vstup);
 
+    static QVector<MapaBod> polygonToSeznamMapaBod(QPolygonF polygon);
 private:
      static QString escapePoznamek(QString vstup) ;
 

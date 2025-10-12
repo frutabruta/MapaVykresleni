@@ -29,6 +29,23 @@ QVector<MapaBod> MapyApiStops::seznamStopPointDestinationToSeznamMapaBod(QVector
 }
 
 
+QVector<MapaBod> MapyApiStops::polygonToSeznamMapaBod(QPolygonF polygon)
+{
+    qDebug()<<Q_FUNC_INFO;
+    QVector<MapaBod> vystup;
+
+
+    foreach(QPointF polozka, polygon)
+    {
+        MapaBod mapaBod;
+        mapaBod.lat=polozka.x();
+        mapaBod.lng=polozka.y();
+        vystup<<mapaBod;
+    }
+    return vystup;
+}
+
+
 MapaBod MapyApiStops::zastavkaCilToMapaBod(StopPointDestination polozka, QString kapka)
 {
     qDebug()<<Q_FUNC_INFO;
