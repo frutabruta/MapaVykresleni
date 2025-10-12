@@ -36,9 +36,9 @@ void GNSSWebSocketServer::sendGnssData() {
     gnssData["longitude"] = longitude;
     gnssData["center_map"] = centerMap;
 
-    if(souradnicovySystem==MnozinaBodu::J_STSK)
+    if(souradnicovySystem==MnozinaBodu::S_JTSK)
     {
-        gnssData["coordinate_system"] = "J_STSK";
+        gnssData["coordinate_system"] = "S_JTSK";
     }
     else
     {

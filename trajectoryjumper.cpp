@@ -42,11 +42,47 @@ void TrajectoryJumper::stop()
 void TrajectoryJumper::slotUpdatePosition()
 {
 
+    MnozinaBodu::SouradnicovySystem pointCoordinateSystem=MnozinaBodu::WGS84;
     if(!currentPointBuffer.isEmpty())
     {
 
-        MapaBod currentSubPoint=currentPointBuffer.takeFirst();
-        gnssWebSockerServer.setData(currentSubPoint.lat,currentSubPoint.lng,MnozinaBodu::J_STSK, centerMap);
+        MapaBod currentSubPoint;
+        if(!currentPointBuffer.isEmpty())
+        {
+            currentSubPoint=currentPointBuffer.takeFirst();
+            if(currentSubPoint.x==0.0)
+            {
+                if(currentSubPoint.lat==0.0)
+                {
+                    if(pointCoordinateSystem==MnozinaBodu::WGS84)
+                    {
+                        qDebug()<<"invalid coordinates, keeping WGS84";
+                    }
+                    else
+                    {
+                        qDebug()<<"invalid coordinates, keeping S_JTSK";
+                    }
+                }
+                else
+                {
+                    qDebug()<<"coordinates override to WGS84";
+                    pointCoordinateSystem=MnozinaBodu::WGS84;
+                }
+            }
+            else
+            {
+                qDebug()<<"coordinates override to S_JTSK";
+                pointCoordinateSystem=MnozinaBodu::S_JTSK;
+            }
+
+        }
+        else
+        {
+            qDebug()<<"empty point list";
+        }
+
+
+        gnssWebSockerServer.setData(currentSubPoint.lat,currentSubPoint.lng,pointCoordinateSystem, centerMap);
         emit signalMapaBod(currentSubPoint);
 
         if(stopAtStops)

@@ -19,7 +19,7 @@ public:
 
     float latitude = 50.087;
     float longitude= 14.421;
-    MnozinaBodu::SouradnicovySystem souradnicovySystem=MnozinaBodu::J_STSK;
+    MnozinaBodu::SouradnicovySystem souradnicovySystem=MnozinaBodu::S_JTSK;
     void setData(float newLatitude, float newLongitude, MnozinaBodu::SouradnicovySystem newCoordinateSystem, bool newCenterMap);
     bool centerMap=false;
 private slots:
