@@ -67,12 +67,15 @@ void TrajectoryJumper::slotUpdatePosition()
                 {
                     qDebug()<<"coordinates override to WGS84";
                     pointCoordinateSystem=MnozinaBodu::WGS84;
+                    gnssWebSockerServer.setData(currentSubPoint.lat,currentSubPoint.lng,pointCoordinateSystem, centerMap);
+
                 }
             }
             else
             {
                 qDebug()<<"coordinates override to S_JTSK";
                 pointCoordinateSystem=MnozinaBodu::S_JTSK;
+                gnssWebSockerServer.setData(currentSubPoint.x,currentSubPoint.y,pointCoordinateSystem, centerMap);
             }
 
         }
@@ -82,8 +85,7 @@ void TrajectoryJumper::slotUpdatePosition()
         }
 
 
-        gnssWebSockerServer.setData(currentSubPoint.lat,currentSubPoint.lng,pointCoordinateSystem, centerMap);
-        emit signalMapaBod(currentSubPoint);
+       emit signalMapaBod(currentSubPoint);
 
         if(stopAtStops)
         {
