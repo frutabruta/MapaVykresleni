@@ -37,8 +37,8 @@ double CoordinatesTools::abs(double input)
 QVector<MapaBod> CoordinatesTools::interpolatePoints(const MapaBod& p1, const MapaBod& p2, double spacing) {
     QVector<MapaBod> points;
 
-    double dx = p2.lat - p1.lat;
-    double dy = p2.lng - p1.lng;
+    double dx = p2.x - p1.x;
+    double dy = p2.y - p1.y;
     double distance = qSqrt(qPow(dx, 2) + qPow(dy, 2));
 
     if (spacing <= 0 || distance == 0)
@@ -50,8 +50,8 @@ QVector<MapaBod> CoordinatesTools::interpolatePoints(const MapaBod& p1, const Ma
         MapaBod newMapPoint;
 
         double t = (spacing * i) / distance;
-        newMapPoint.lat=p1.lat + t * dx;
-        newMapPoint.lng=p1.lng + t * dy;
+        newMapPoint.x=p1.x + t * dx;
+        newMapPoint.y=p1.y + t * dy;
 
 
         points.append(newMapPoint);
