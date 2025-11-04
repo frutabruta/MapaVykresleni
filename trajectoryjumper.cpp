@@ -22,6 +22,7 @@ void TrajectoryJumper::start()
     else
     {
         timerJumptoNextPoint.start();
+        slotUpdatePosition();
         isRunning=true;
     }
 
@@ -42,7 +43,7 @@ void TrajectoryJumper::stop()
 void TrajectoryJumper::slotUpdatePosition()
 {
 
-    MnozinaBodu::SouradnicovySystem pointCoordinateSystem=MnozinaBodu::WGS84;
+
     if(!currentPointBuffer.isEmpty())
     {
 
@@ -50,33 +51,7 @@ void TrajectoryJumper::slotUpdatePosition()
         if(!currentPointBuffer.isEmpty())
         {
             currentSubPoint=currentPointBuffer.takeFirst();
-            if(currentSubPoint.x==0.0)
-            {
-                if(currentSubPoint.lat==0.0)
-                {
-                    if(pointCoordinateSystem==MnozinaBodu::WGS84)
-                    {
-                        qDebug()<<"invalid coordinates, keeping WGS84";
-                    }
-                    else
-                    {
-                        qDebug()<<"invalid coordinates, keeping S_JTSK";
-                    }
-                }
-                else
-                {
-                    qDebug()<<"coordinates override to WGS84";
-                    pointCoordinateSystem=MnozinaBodu::WGS84;
-                    gnssWebSockerServer.setData(currentSubPoint.lat,currentSubPoint.lng,pointCoordinateSystem, centerMap);
-
-                }
-            }
-            else
-            {
-                qDebug()<<"coordinates override to S_JTSK";
-                pointCoordinateSystem=MnozinaBodu::S_JTSK;
-                gnssWebSockerServer.setData(currentSubPoint.x,currentSubPoint.y,pointCoordinateSystem, centerMap);
-            }
+            setMapaBod(currentSubPoint);
 
         }
         else
@@ -92,6 +67,11 @@ void TrajectoryJumper::slotUpdatePosition()
             if(currentSubPoint.isStop )
             {
                 arrivedAtStop();
+                 qDebug()<<"at top";
+            }
+            else
+            {
+                qDebug()<<"not at stop";
             }
         }
         else
@@ -111,9 +91,17 @@ void TrajectoryJumper::slotUpdatePosition()
 
             if((iterator+1)<seznamMapaBodu.count())
             {
+                if(iterator==0)
+                {
+
+                }
                 nextMapaBod=seznamMapaBodu.at(iterator+1);
                 currentPointBuffer=coordinatesTools.interpolatePoints(currentMapaBod,nextMapaBod,10);
                 currentPointBuffer.append(nextMapaBod);
+                if(iterator==0)
+                {
+                    currentPointBuffer.push_front(currentMapaBod);
+                }
                 iterator++;
 
             }
@@ -149,6 +137,38 @@ void TrajectoryJumper::departedFromStop()
 {
     qDebug()<<Q_FUNC_INFO;
     timerJumptoNextPoint.start();
+}
+
+void TrajectoryJumper::setMapaBod(MapaBod currentSubPoint)
+{
+    MnozinaBodu::SouradnicovySystem pointCoordinateSystem=MnozinaBodu::WGS84;
+    if(currentSubPoint.x==0.0)
+    {
+        if(currentSubPoint.lat==0.0)
+        {
+            if(pointCoordinateSystem==MnozinaBodu::WGS84)
+            {
+                qDebug()<<"invalid coordinates, keeping WGS84";
+            }
+            else
+            {
+                qDebug()<<"invalid coordinates, keeping S_JTSK";
+            }
+        }
+        else
+        {
+            qDebug()<<"coordinates override to WGS84";
+            pointCoordinateSystem=MnozinaBodu::WGS84;
+            gnssWebSockerServer.setData(currentSubPoint.lat,currentSubPoint.lng,pointCoordinateSystem, centerMap);
+
+        }
+    }
+    else
+    {
+        qDebug()<<"coordinates override to S_JTSK";
+        pointCoordinateSystem=MnozinaBodu::S_JTSK;
+        gnssWebSockerServer.setData(currentSubPoint.x,currentSubPoint.y,pointCoordinateSystem, centerMap);
+    }
 }
 
 

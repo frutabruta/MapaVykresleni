@@ -55,6 +55,7 @@ private slots:
     void arrivedAtStop();
 private:
     void departedFromStop();
+    void setMapaBod(MapaBod currentSubPoint);
 };
 
 #endif // TRAJECTORYJUMPER_H
