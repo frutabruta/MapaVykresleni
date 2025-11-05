@@ -20,6 +20,7 @@ public:
     bool vykresliTrasu=false;
     bool vykresliRadius=false;
     bool vykresliPolygon=false;
+    bool vykresliPolygonOut=false;
     SouradnicovySystem souradnicovySystem=MnozinaBodu::WGS84;
 };
 

@@ -9,7 +9,7 @@ MapaVykresleni::MapaVykresleni()
 
 
 
-void MapaVykresleni::pridejMnozinu(QVector<MapaBod> seznamBodu , bool vykresliBody, bool vykresliSpojnici, bool vykresliTrasu, bool vykresliRadius,bool vykresliPolygon, MnozinaBodu::SouradnicovySystem souradnicovySystem)
+void MapaVykresleni::pridejMnozinu(QVector<MapaBod> seznamBodu , bool vykresliBody, bool vykresliSpojnici, bool vykresliTrasu, bool vykresliRadius,bool vykresliPolygon,bool vykresliPolygonOut, MnozinaBodu::SouradnicovySystem souradnicovySystem)
 {
     qDebug()<<Q_FUNC_INFO;
     //QVector<StopPointDestination> seznam
@@ -21,6 +21,7 @@ void MapaVykresleni::pridejMnozinu(QVector<MapaBod> seznamBodu , bool vykresliBo
     mnozinaBodu.vykresliRadius=vykresliRadius;
     mnozinaBodu.souradnicovySystem=souradnicovySystem;
     mnozinaBodu.vykresliPolygon=vykresliPolygon;
+    mnozinaBodu.vykresliPolygonOut=vykresliPolygonOut;
     seznamMnozin.push_back(mnozinaBodu);
 }
 
@@ -42,6 +43,7 @@ void MapaVykresleni::seznamMnozinDoJson(QVector<MnozinaBodu> seznamMnozin,  QStr
         jPolozka.insert("vykresliTrasu", QJsonValue::fromVariant(polozkaMnozina.vykresliTrasu));
         jPolozka.insert("vykresliRadius", QJsonValue::fromVariant(polozkaMnozina.vykresliRadius));
         jPolozka.insert("vykresliPolygon", QJsonValue::fromVariant(polozkaMnozina.vykresliPolygon));
+        jPolozka.insert("vykresliPolygonOut", QJsonValue::fromVariant(polozkaMnozina.vykresliPolygonOut));
 
         if(!polozkaMnozina.seznamMapaBodu.isEmpty())
         {

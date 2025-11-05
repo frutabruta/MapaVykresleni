@@ -235,6 +235,11 @@ for (var k = 0; k < znackyPole.length; k++) {
                 var polygon = L.polygon(lineCoordsOsm, {color: 'green'}).addTo(map);
               //  map.fitBounds(polyline.getBounds());
             }
+
+            if (znackyPole[k].vykresliPolygonOut) {
+                var polygonOut = L.polygon(lineCoordsOsm, {color: 'yellow'}).addTo(map);
+              //  map.fitBounds(polyline.getBounds());
+            }
      
 
             q = q + 1;

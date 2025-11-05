@@ -29,7 +29,7 @@ public:
 
     void qstringDoSouboru(QString cesta, QString obsah);
 
-    void pridejMnozinu(QVector<MapaBod> seznamBodu, bool vykresliBody, bool vykresliSpojnici, bool vykresliTrasu, bool vykresliRadius, bool vykresliPolygon, MnozinaBodu::SouradnicovySystem souradnicovySystem);
+    void pridejMnozinu(QVector<MapaBod> seznamBodu, bool vykresliBody, bool vykresliSpojnici, bool vykresliTrasu, bool vykresliRadius, bool vykresliPolygon,bool vykresliPolygonOut, MnozinaBodu::SouradnicovySystem souradnicovySystem);
     void seznamMnozinDoJson(QVector<MnozinaBodu> seznamMnozin, QString popis);
     QString htmlTag(QString vstup, QString tag);
 
