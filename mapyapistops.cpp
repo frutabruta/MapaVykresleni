@@ -37,9 +37,7 @@ QVector<MapaBod> MapyApiStops::polygonToSeznamMapaBod(QPolygonF polygon)
 
     foreach(QPointF polozka, polygon)
     {
-        MapaBod mapaBod;
-        mapaBod.lat=polozka.x();
-        mapaBod.lng=polozka.y();
+        MapaBod mapaBod(polozka,true);
         vystup<<mapaBod;
     }
     return vystup;

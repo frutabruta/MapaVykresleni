@@ -3,6 +3,31 @@ Qt library to generate HTML map file from supplied coordinates, using Leaflet an
 Supports receiving real-time drawing of current position using websocket on port 12345. 
 
 ## Changelog:
+- 20260119_1549
+  - new functions
+    - MapaBod::sjtskToQPointF (former toQPointF)
+    - MapaBod::wgs84ToQPointF
+    - new constructor MapaBod(QPointF coordinatesSjtsk)
+
+    - CoordinatesTools
+      - distanceMetersWgs84
+      - isPointInsideCircleWgs84
+      - pointAtDistanceSjtsk
+      - isPointOnSegmentSimpleSjtsk
+      - distanceMetersWgs84
+      - distanceMetersSjtsk
+      - isPointOnSegmentSimpleWgs84
+      - pointAtDistanceWgs84
+      - degToRad
+      - radToDeg
+    - MnozinaBodu::SouradnicovySystem
+      - added new value  coordinatesUnknown
+    - TrajectoryJumper
+      - total overhaul to support skipping by exact distance (longer or shorter then defined segments)
+
+
+
+
 - 20251105_1624
   - MapaVykresleni::pridejMnozinu
     - added vykresliPolygonOut attribute

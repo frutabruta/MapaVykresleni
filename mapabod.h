@@ -9,6 +9,7 @@ class MapaBod
 {
 public:
     MapaBod();
+    MapaBod(QPointF coordinatesSjtsk);
     QString hlavicka="";
     QString obsah="";
     QString kapka="";
@@ -19,7 +20,9 @@ public:
     double lng=0.0;
     int radius=0;
     bool isStop=false;
-    QPointF toQPointF();
+    QPointF sjtskToQPointF();
+    QPointF wgs84ToQPointF();
+    MapaBod(QPointF coordinatesWgs84, bool wgs84);
 };
 
 #endif // MAPABOD_H

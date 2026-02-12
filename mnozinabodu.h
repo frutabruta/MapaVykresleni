@@ -11,7 +11,8 @@ public:
     MnozinaBodu();
     enum SouradnicovySystem {
         WGS84,
-        S_JTSK
+        S_JTSK,
+        coordinatesUnknown
     };
 
     QVector<MapaBod> seznamMapaBodu;
