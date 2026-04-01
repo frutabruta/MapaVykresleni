@@ -41,7 +41,7 @@ void TrajectoryJumper::stop()
 
 
 
-
+/*
 void TrajectoryJumper::slotUpdatePosition()
 {
     qDebug()<<Q_FUNC_INFO;
@@ -114,6 +114,8 @@ void TrajectoryJumper::slotUpdatePosition()
         }
     }
 }
+*/
+
 
 //WIP
 void TrajectoryJumper::slotUpdatePositionNew()
@@ -219,6 +221,7 @@ void TrajectoryJumper::slotUpdatePositionNew()
 
 
                 stop();
+                break;
             }
         }
 

@@ -51,7 +51,7 @@ public:
     MnozinaBodu::SouradnicovySystem coordinateSystemFromMapaPointList(QVector<MapaBod> mapaBodList);
 
 public slots:
-    void slotUpdatePosition();
+   // void slotUpdatePosition();
     void slotUpdatePositionNew();
 
 signals:

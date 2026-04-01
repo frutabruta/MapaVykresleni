@@ -3,6 +3,12 @@ Qt library to generate HTML map file from supplied coordinates, using Leaflet an
 Supports receiving real-time drawing of current position using websocket on port 12345. 
 
 ## Changelog:
+- 202604011527
+  - TrajectoryJumper::slotUpdatePositionNew
+    - fixed while loop on last stop
+  - removed unused  void slotUpdatePosition();
+  - VDV301DataStructures
+    - new version
 - 20260119_1549
   - new functions
     - MapaBod::sjtskToQPointF (former toQPointF)
