@@ -2,8 +2,13 @@
 Qt library to generate HTML map file from supplied coordinates, using Leaflet and OSM.
 Supports receiving real-time drawing of current position using websocket on port 12345. 
 
-## Changelog:
-- 202604011527
+## Changelog
+- 20260402_1834
+  - complete move to localHost server approach to fix OSM referer issues
+  - new function MapaVykresleni::openMap - has to be called separately
+  - new class mapServer
+
+- 20260401_1527
   - TrajectoryJumper::slotUpdatePositionNew
     - fixed while loop on last stop
   - removed unused  void slotUpdatePosition();

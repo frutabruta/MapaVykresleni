@@ -2,10 +2,16 @@
 
 
 
-MapaVykresleni::MapaVykresleni()
+MapaVykresleni::MapaVykresleni() : mapServer("path/to/mapFiles")
 {
 
 }
+
+void MapaVykresleni::openMap()
+{
+    mapServer.open();
+}
+
 
 
 
@@ -129,7 +135,7 @@ void MapaVykresleni::seznamMnozinDoJson(QVector<MnozinaBodu> seznamMnozin,  QStr
 
     qstringDoSouboru(mHtmlResultPath+"/data.js","var dataj='"+doc.toJson(QJsonDocument::Compact)+"';");
 
-    QDesktopServices::openUrl(QUrl::fromLocalFile(mHtmlResultPath+"/mapa.html"));
+  //  QDesktopServices::openUrl(QUrl::fromLocalFile(mHtmlResultPath+"/mapa.html"));
 }
 
 

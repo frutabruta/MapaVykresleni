@@ -1,7 +1,10 @@
 #include "mapyapistops.h"
 #include <QColor>
 
-MapyApiStops::MapyApiStops() {}
+MapyApiStops::MapyApiStops()
+{
+}
+
 
 
 QVector<MapaBod> MapyApiStops::seznamStopPointDestinationToSeznamMapaBod(QVector<StopPointDestination> seznamZastavek, bool poradi)
@@ -186,3 +189,6 @@ QString MapyApiStops::escapePoznamek(QString vstup)
 
     return vstup ;
 }
+
+
+

@@ -14,6 +14,7 @@
 #include <QtGlobal>
 
 #include "mnozinabodu.h"
+#include "MapaVykresleni/mapserver.h"
 
 
 
@@ -38,6 +39,9 @@ public:
     QString getHtmlResultPath() const;
     void setHtmlResultPath(const QString &htmlResultPath);
 
+    MapServer mapServer;
+
+    void openMap();
 private:
     QString mHtmlResultPath="";
 
