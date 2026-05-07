@@ -16,8 +16,8 @@ public:
     QColor barva=QColor::fromRgb(255,0,0);
     double x=0.0; //S-JTSK coordinate
     double y=0.0; //S-JTSK coordinate
-    double lat=0.0;
-    double lng=0.0;
+    double lat=0.0;  //y
+    double lng=0.0; //x
     int radius=0;
     bool isStop=false;
     QPointF sjtskToQPointF();

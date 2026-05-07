@@ -3,6 +3,15 @@ Qt library to generate HTML map file from supplied coordinates, using Leaflet an
 Supports receiving real-time drawing of current position using websocket on port 12345. 
 
 ## Changelog
+- 20260507_1750
+  - MapaBod
+    - constructor QPointF x y swap (x->lng, y->lat)
+  - TrajectoryJumper  
+    - added signalChangeSjtsk
+    - removed signalMapaBod
+    - TrajectoryJumper::setMapaBod
+      - xy swap fix
+  
 - 20260402_1834
   - complete move to localHost server approach to fix OSM referer issues
   - new function MapaVykresleni::openMap - has to be called separately
@@ -14,6 +23,7 @@ Supports receiving real-time drawing of current position using websocket on port
   - removed unused  void slotUpdatePosition();
   - VDV301DataStructures
     - new version
+  
 - 20260119_1549
   - new functions
     - MapaBod::sjtskToQPointF (former toQPointF)
@@ -37,8 +47,6 @@ Supports receiving real-time drawing of current position using websocket on port
       - total overhaul to support skipping by exact distance (longer or shorter then defined segments)
 
 
-
-
 - 20251105_1624
   - MapaVykresleni::pridejMnozinu
     - added vykresliPolygonOut attribute
@@ -54,6 +62,7 @@ Supports receiving real-time drawing of current position using websocket on port
     - new function TrajectoryJumper::setMapaBod
     - TrajectoryJumper::slotUpdatePosition
       - fixed missing first point of trajectory
+  
 - 20251025_2300
   - TrajectoryJumper::slotUpdatePosition
     - fix
@@ -62,6 +71,7 @@ Supports receiving real-time drawing of current position using websocket on port
     - S-JTSK fix
   - TrajectoryJumper::slotUpdatePosition()
     - now supports S-JTSK trajectories
+
 - 20251012_1226
   - MapaVykresleni::pridejMnozinu
     - added vykresliPolygon option
@@ -73,8 +83,7 @@ Supports receiving real-time drawing of current position using websocket on port
   - VDV301DataStructures
     - added polygon to StopPoint
   - mapa.js
-    - chnaged coordinate system check from J-STSK to S_JTSK
-
+    - changed coordinate system check from J-STSK to S_JTSK
 
 - 20251012_0021
   - MapaBod

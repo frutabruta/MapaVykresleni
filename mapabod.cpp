@@ -19,8 +19,8 @@ MapaBod::MapaBod(QPointF coordinatesSjtsk)
  */
 MapaBod::MapaBod(QPointF coordinatesWgs84, bool wgs84)
 {
-    lat=coordinatesWgs84.x();
-    lng=coordinatesWgs84.y();
+    lat=coordinatesWgs84.y();
+    lng=coordinatesWgs84.x();
 }
 
 
@@ -31,7 +31,7 @@ QPointF MapaBod::sjtskToQPointF()
 
 QPointF MapaBod::wgs84ToQPointF()
 {
-    return QPointF(lat,lng);
+    return QPointF(lng,lat);
 }
 
 

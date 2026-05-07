@@ -56,8 +56,9 @@ public slots:
 
 signals:
     void signalError(QString errorString);
-    void signalMapaBod(MapaBod ouput);
-    void signalChangeWgs(QPointF output);
+    //void signalMapaBod(MapaBod ouput);  //deprecated
+    void signalChangeWgs84(QPointF output);
+    void signalChangeSjtsk(QPointF output);
 
 private slots:
     void arrivedAtStop();

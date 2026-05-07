@@ -27,7 +27,6 @@ void TrajectoryJumper::start()
         slotUpdatePositionNew();
         isRunning=true;
     }
-
 }
 
 
@@ -40,81 +39,6 @@ void TrajectoryJumper::stop()
 }
 
 
-
-/*
-void TrajectoryJumper::slotUpdatePosition()
-{
-    qDebug()<<Q_FUNC_INFO;
-
-    if(!currentPointBuffer.isEmpty())
-    {
-        MapaBod currentSubPoint;
-        if(!currentPointBuffer.isEmpty())
-        {
-            currentSubPoint=currentPointBuffer.takeFirst();
-            setMapaBod(currentSubPoint);
-
-        }
-        else
-        {
-            qDebug()<<"empty point list";
-        }
-
-
-        emit signalMapaBod(currentSubPoint);
-        emit signalChangeWgs(currentSubPoint.wgs84ToQPointF());
-
-        if(stopAtStops)
-        {
-            if(currentSubPoint.isStop )
-            {
-                arrivedAtStop();
-                qDebug()<<"at top";
-            }
-            else
-            {
-                qDebug()<<"not at stop";
-            }
-        }
-        else
-        {
-            // departedFromStop();
-        }
-    }
-    else
-    {
-        if(iterator<seznamMapaBodu.length())
-        {
-            currentMapaBod=seznamMapaBodu.at(iterator);
-
-            if((iterator+1)<seznamMapaBodu.count())
-            {
-                nextMapaBod=seznamMapaBodu.at(iterator+1);
-                currentPointBuffer=coordinatesTools.interpolatePointsSjtsk(currentMapaBod.sjtskToQPointF(),nextMapaBod.sjtskToQPointF(),skipDistanceMeters);
-                currentPointBuffer.append(nextMapaBod);
-
-                if(iterator==0)
-                {
-                    currentPointBuffer.push_front(currentMapaBod);
-                }
-                iterator++;
-
-            }
-            else
-            {
-                qDebug()<<"next point out of range";
-                stop();
-            }
-        }
-        else
-        {
-            timerJumptoNextPoint.stop();
-            qDebug()<<"this point out of range";
-            stop();
-        }
-    }
-}
-*/
 
 
 //WIP
@@ -173,12 +97,13 @@ void TrajectoryJumper::slotUpdatePositionNew()
 
                     if(coordinatesSystem==MnozinaBodu::WGS84)
                     {
-                        emit signalChangeWgs(testedPoint);
-                        emit signalMapaBod(MapaBod(testedPoint,true));
+                        emit signalChangeWgs84(testedPoint);
+                       // emit signalMapaBod(MapaBod(testedPoint,true));  //deprecated
                     }
                     else if(coordinatesSystem==MnozinaBodu::S_JTSK)
-                    {
-                        emit signalMapaBod(MapaBod(testedPoint));
+                    {                        
+                        emit signalChangeSjtsk(testedPoint);
+                       // emit signalMapaBod(MapaBod(testedPoint)); //deprecated
                     }
                     // emit signalMapaBod(MapaBod(testedPoint));
                     residualDistanceFromPreviousPoint=0.0;
@@ -294,7 +219,7 @@ void TrajectoryJumper::setMapaBod(QPointF currentSubPoint, MnozinaBodu::Souradni
     if(pointCoordinateSystem==MnozinaBodu::WGS84)
     {
         qDebug()<<" x: "<<QString::number(currentSubPoint.x(),'f',6)<<" y: "<<QString::number(currentSubPoint.y(),'f',6);
-        gnssWebSockerServer.setData(currentSubPoint.x(),currentSubPoint.y(),pointCoordinateSystem, centerMap);
+        gnssWebSockerServer.setData(currentSubPoint.y(),currentSubPoint.x(),pointCoordinateSystem, centerMap);
     }
     else
     {
