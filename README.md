@@ -3,6 +3,9 @@ Qt library to generate HTML map file from supplied coordinates, using Leaflet an
 Supports receiving real-time drawing of current position using websocket on port 12345. 
 
 ## Changelog
+- 20260804_1623
+  - VDV301Datastructures update
+
 - 20260507_1750
   - MapaBod
     - constructor QPointF x y swap (x->lng, y->lat)
