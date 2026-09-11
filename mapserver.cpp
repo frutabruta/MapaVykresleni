@@ -1,4 +1,5 @@
 #include "mapserver.h"
+#include <QTcpServer>
 
 
 
@@ -14,7 +15,24 @@ MapServer::MapServer(const QString &mapFilesPath, QObject *parent )
         return serveFile(filename);
     });
 
-    m_port = m_server.listen(QHostAddress::LocalHost);
+
+
+
+
+    #if QT_VERSION < QT_VERSION_CHECK(6, 8, 0)
+
+        m_port = m_server.listen(QHostAddress::LocalHost);
+    #else
+    auto tcpserver = new QTcpServer();
+    if (!tcpserver->listen(QHostAddress::LocalHost) || !m_server.bind(tcpserver)) {
+        delete tcpserver;
+        return;
+    }
+    m_port = tcpserver->serverPort();
+    qDebug() << "Listening on port" << m_port;
+    #endif
+
+
 }
 
 void MapServer::open() {
