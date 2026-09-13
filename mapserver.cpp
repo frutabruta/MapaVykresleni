@@ -3,45 +3,52 @@
 
 
 
-
 MapServer::MapServer(const QString &mapFilesPath, QObject *parent )
     : QObject(parent), m_mapFilesPath(mapFilesPath)
 {
+    qDebug()<<Q_FUNC_INFO<<" "<<mapFilesPath;
     m_server.route("/", [this]() {
         return serveFile("mapa.html");
     });
 
-    m_server.route("/<arg>", [this](const QString &filename) {
-        return serveFile(filename);
-    });
+    m_server.route("/ping", [this]()
+                   {
+                       qDebug() << Q_FUNC_INFO << "ping route hit";
+                       return QHttpServerResponse("text/plain", QByteArray("pong"));
+                   });
 
+    m_server.setMissingHandler(this, [this](const QHttpServerRequest &request, QHttpServerResponder &responder)
+                               {
+                                   QString path = request.url().path();
+                                   qDebug() << Q_FUNC_INFO << "unmatched request for" << path;
 
+                                   QString relativePath = path.startsWith("/") ? path.mid(1) : path;
+                                   QHttpServerResponse response = serveFile(relativePath);
+                                   responder.sendResponse(std::move(response));
+                               });
 
-
-
-    #if QT_VERSION < QT_VERSION_CHECK(6, 8, 0)
+#if QT_VERSION < QT_VERSION_CHECK(6, 8, 0)
 
     m_port = m_server.listen(QHostAddress::LocalHost);
-    #else
+#else
     auto tcpserver = new QTcpServer();
-    if (!tcpserver->listen(QHostAddress::LocalHost) || !m_server.bind(tcpserver)) {
+    if (!tcpserver->listen(QHostAddress::Any) || !m_server.bind(tcpserver)) {
         delete tcpserver;
         return;
     }
     m_port = tcpserver->serverPort();
     qDebug() << "Listening on port" << m_port;
-    #endif
-
-
+#endif
 }
 
 void MapServer::open() {
-    QDesktopServices::openUrl(QUrl("http://localhost:" + QString::number(m_port) + "/"+pageName));
+    QDesktopServices::openUrl(QUrl("http://127.0.0.1:" + QString::number(m_port) + "/"+pageName));
 }
 
 void MapServer::setMapFilesPath(const QString &newMapFilesPath)
 {
     m_mapFilesPath = newMapFilesPath;
+    qDebug()<<"new maps path:"<<newMapFilesPath;
 }
 
 quint16 MapServer::port()
@@ -51,6 +58,7 @@ quint16 MapServer::port()
 QHttpServerResponse MapServer::serveFile(const QString &filename)
 {
     QFile file(m_mapFilesPath + "/" + filename);
+    qDebug()<<Q_FUNC_INFO<<" "<<m_mapFilesPath<<"/"<<filename;
     if (!file.open(QIODevice::ReadOnly))
         return QHttpServerResponse(QHttpServerResponse::StatusCode::NotFound);
 

@@ -16,16 +16,10 @@
 #include "mnozinabodu.h"
 #include "MapaVykresleni/mapserver.h"
 
-
-
-
-
-
 class MapaVykresleni
 {
 public:
-
-    MapaVykresleni();
+    MapaVykresleni(QString mapFilesFolder="");
     QVector<MnozinaBodu> seznamMnozin;
 
     void qstringDoSouboru(QString cesta, QString obsah);
@@ -33,8 +27,6 @@ public:
     void pridejMnozinu(QVector<MapaBod> seznamBodu, bool vykresliBody, bool vykresliSpojnici, bool vykresliTrasu, bool vykresliRadius, bool vykresliPolygon,bool vykresliPolygonOut, MnozinaBodu::SouradnicovySystem souradnicovySystem);
     void seznamMnozinDoJson(QVector<MnozinaBodu> seznamMnozin, QString popis);
     QString htmlTag(QString vstup, QString tag);
-
-
 
     QString getHtmlResultPath() const;
     void setHtmlResultPath(const QString &htmlResultPath);
@@ -44,6 +36,7 @@ public:
     void openMap();
 private:
     QString mHtmlResultPath="";
+    QString mMapFilesFolder="";
 
 };
 

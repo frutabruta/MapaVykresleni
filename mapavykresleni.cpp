@@ -2,7 +2,7 @@
 
 
 
-MapaVykresleni::MapaVykresleni() : mapServer("path/to/mapFiles")
+MapaVykresleni::MapaVykresleni(QString mapFilesPath) : mapServer(mapFilesPath)
 {
 
 }

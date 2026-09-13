@@ -8,7 +8,8 @@
 class MapyApiStops : public MapaVykresleni
 {
 public:
-    MapyApiStops();
+    //MapyApiStops();
+    MapyApiStops(QString mapFilesPath);
 
     static MapaBod zastavkaCilToMapaBod(StopPointDestination polozka, QString kapka);
     static QVector<MapaBod> seznamStopPointDestinationToSeznamMapaBod(QVector<StopPointDestination> seznamZastavek, bool poradi);
@@ -16,6 +17,7 @@ public:
     QString uzelDoTabulky(StopPoint vstup);
 
     static QVector<MapaBod> polygonToSeznamMapaBod(QPolygonF polygon);
+
 private:
      static QString escapePoznamek(QString vstup) ;
 

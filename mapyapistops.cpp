@@ -1,7 +1,8 @@
 #include "mapyapistops.h"
 #include <QColor>
 
-MapyApiStops::MapyApiStops()
+MapyApiStops::MapyApiStops(QString mapFilesPath) : MapaVykresleni(mapFilesPath)
+
 {
 }
 

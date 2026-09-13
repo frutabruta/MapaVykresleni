@@ -3,6 +3,11 @@ Qt library to generate HTML map file from supplied coordinates, using Leaflet an
 Supports receiving real-time drawing of current position using websocket on port 12345. 
 
 ## Changelog
+- 20260913_2134
+  - changes to improve support on android
+    - MapServer file path
+    - localhost changed to 127.0.0.1
+     
 - 20260913_1418
   - mapa.js modified to send position on drag of green marker
   - green marker automatically set on start of trajectory
