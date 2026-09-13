@@ -3,6 +3,9 @@ Qt library to generate HTML map file from supplied coordinates, using Leaflet an
 Supports receiving real-time drawing of current position using websocket on port 12345. 
 
 ## Changelog
+- 20260913_1154
+  - added GnssWebsocketDragMap to simulate position by dragging a marker on map
+  
 - 20260911_1758
   - mapServer
     - Qt 6.11 new server syntax fix

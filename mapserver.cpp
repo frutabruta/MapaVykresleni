@@ -21,7 +21,7 @@ MapServer::MapServer(const QString &mapFilesPath, QObject *parent )
 
     #if QT_VERSION < QT_VERSION_CHECK(6, 8, 0)
 
-        m_port = m_server.listen(QHostAddress::LocalHost);
+    m_port = m_server.listen(QHostAddress::LocalHost);
     #else
     auto tcpserver = new QTcpServer();
     if (!tcpserver->listen(QHostAddress::LocalHost) || !m_server.bind(tcpserver)) {
@@ -36,7 +36,7 @@ MapServer::MapServer(const QString &mapFilesPath, QObject *parent )
 }
 
 void MapServer::open() {
-    QDesktopServices::openUrl(QUrl("http://localhost:" + QString::number(m_port) + "/mapa.html"));
+    QDesktopServices::openUrl(QUrl("http://localhost:" + QString::number(m_port) + "/"+pageName));
 }
 
 void MapServer::setMapFilesPath(const QString &newMapFilesPath)

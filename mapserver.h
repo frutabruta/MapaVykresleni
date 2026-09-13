@@ -20,6 +20,8 @@ public:
 
     void setMapFilesPath(const QString &newMapFilesPath);
 
+    QString pageName="mapa.html";
+
 private:
     QHttpServer m_server;
     QMimeDatabase m_mimeDb;
