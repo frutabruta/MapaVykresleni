@@ -9,6 +9,8 @@
 #include <QTimer>
 #include <QObject>
 #include "mnozinabodu.h"
+#include <memory>
+#include <vector>
 
 class GNSSWebSocketServer : public QObject {
     Q_OBJECT
@@ -19,18 +21,24 @@ public:
 
     float latitude = 50.087;
     float longitude= 14.421;
-    MnozinaBodu::SouradnicovySystem souradnicovySystem=MnozinaBodu::S_JTSK;
+    MnozinaBodu::SouradnicovySystem souradnicovySystem=MnozinaBodu::WGS84;
     void setData(float newLatitude, float newLongitude, MnozinaBodu::SouradnicovySystem newCoordinateSystem, bool newCenterMap);
     bool centerMap=false;
+    bool listen(quint16 port);
+public slots:
+    void onTextMessageReceived(const QString &message);
 private slots:
     void onNewConnection();
     void onClientDisconnected();
     void sendGnssData();
 
+    void onSocketDisconnected();
 private:
-    QWebSocketServer *server;
-    QList<QWebSocket *> clients;
-    QTimer *timer;
+    std::unique_ptr<QWebSocketServer> m_wsServer;
+    std::vector<std::unique_ptr<QWebSocket>> m_clients;
+    QTimer timer;
+signals:
+    void signalGnssPositionReceived(double latitude, double longitude, bool centerMap);
 };
 
 

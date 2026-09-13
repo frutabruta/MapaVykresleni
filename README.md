@@ -3,6 +3,13 @@ Qt library to generate HTML map file from supplied coordinates, using Leaflet an
 Supports receiving real-time drawing of current position using websocket on port 12345. 
 
 ## Changelog
+- 20260913_1418
+  - mapa.js modified to send position on drag of green marker
+  - green marker automatically set on start of trajectory
+  - GNSSWebSocketServer
+    - remade to accept receiving of position from socket 
+  - added TrajectoryJumper::slotReceivedWebSocketPosition
+  
 - 20260913_1154
   - added GnssWebsocketDragMap to simulate position by dragging a marker on map
   

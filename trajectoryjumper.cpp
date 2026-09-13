@@ -1,6 +1,6 @@
 #include "trajectoryjumper.h"
 
-TrajectoryJumper::TrajectoryJumper():gnssWebSockerServer(12345)
+TrajectoryJumper::TrajectoryJumper():gnssWebSocketServer(12345)
 {
     qDebug()<<Q_FUNC_INFO;
     timerJumptoNextPoint.setInterval(skipSegmentTime);
@@ -8,6 +8,7 @@ TrajectoryJumper::TrajectoryJumper():gnssWebSockerServer(12345)
     timerStayAtStop.setSingleShot(true);
     connect(&timerJumptoNextPoint,&QTimer::timeout,this,&TrajectoryJumper::slotUpdatePositionNew);
     connect(&timerStayAtStop,&QTimer::timeout,this,&TrajectoryJumper::departedFromStop);
+    connect(&gnssWebSocketServer,&GNSSWebSocketServer::signalGnssPositionReceived,this,&TrajectoryJumper::slotReceivedWebSocketPosition);
 }
 
 
@@ -193,7 +194,7 @@ void TrajectoryJumper::setMapaBod(MapaBod currentSubPoint)
         {
             qDebug()<<"coordinates override to WGS84";
             pointCoordinateSystem=MnozinaBodu::WGS84;
-            gnssWebSockerServer.setData(currentSubPoint.lat,currentSubPoint.lng,pointCoordinateSystem, centerMap);
+            gnssWebSocketServer.setData(currentSubPoint.lat,currentSubPoint.lng,pointCoordinateSystem, centerMap);
 
         }
     }
@@ -201,7 +202,7 @@ void TrajectoryJumper::setMapaBod(MapaBod currentSubPoint)
     {
         qDebug()<<"coordinates override to S_JTSK";
         pointCoordinateSystem=MnozinaBodu::S_JTSK;
-        gnssWebSockerServer.setData(currentSubPoint.x,currentSubPoint.y,pointCoordinateSystem, centerMap);
+        gnssWebSocketServer.setData(currentSubPoint.x,currentSubPoint.y,pointCoordinateSystem, centerMap);
     }
 }
 
@@ -219,12 +220,12 @@ void TrajectoryJumper::setMapaBod(QPointF currentSubPoint, MnozinaBodu::Souradni
     if(pointCoordinateSystem==MnozinaBodu::WGS84)
     {
         qDebug()<<" x: "<<QString::number(currentSubPoint.x(),'f',6)<<" y: "<<QString::number(currentSubPoint.y(),'f',6);
-        gnssWebSockerServer.setData(currentSubPoint.y(),currentSubPoint.x(),pointCoordinateSystem, centerMap);
+        gnssWebSocketServer.setData(currentSubPoint.y(),currentSubPoint.x(),pointCoordinateSystem, centerMap);
     }
     else
     {
         qDebug()<<" x: "<<QString::number(currentSubPoint.x(),'f',2)<<" y: "<<QString::number(currentSubPoint.y(),'f',2);
-        gnssWebSockerServer.setData(currentSubPoint.x(),currentSubPoint.y(),pointCoordinateSystem, centerMap);
+        gnssWebSocketServer.setData(currentSubPoint.x(),currentSubPoint.y(),pointCoordinateSystem, centerMap);
     }
 
 }
@@ -279,6 +280,9 @@ MnozinaBodu::SouradnicovySystem TrajectoryJumper::coordinateSystemFromMapaPointL
 }
 
 
-
+void TrajectoryJumper::slotReceivedWebSocketPosition(double latitude, double longitude, bool centerMap)
+{
+    emit signalChangeWgs84(QPointF(longitude,latitude));
+}
 
 

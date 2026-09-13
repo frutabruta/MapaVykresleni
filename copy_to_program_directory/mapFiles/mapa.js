@@ -5,34 +5,34 @@ var redIcon = new L.Icon({
     iconAnchor: [12, 41],
     popupAnchor: [1, -34],
     shadowSize: [41, 41]
-  });
+});
 
-  var blueIcon = new L.Icon({
+var blueIcon = new L.Icon({
     iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png',
     shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
     iconSize: [25, 41],
     iconAnchor: [12, 41],
     popupAnchor: [1, -34],
     shadowSize: [41, 41]
-  });
-  
-  var yellowIcon = new L.Icon({
+});
+
+var yellowIcon = new L.Icon({
     iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-yellow.png',
     shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
     iconSize: [25, 41],
     iconAnchor: [12, 41],
     popupAnchor: [1, -34],
     shadowSize: [41, 41]
-  });
-  
-  var greenIcon = new L.Icon({
+});
+
+var greenIcon = new L.Icon({
     iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png',
     shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
     iconSize: [25, 41],
     iconAnchor: [12, 41],
     popupAnchor: [1, -34],
     shadowSize: [41, 41]
-  });
+});
 
 
 
@@ -44,36 +44,35 @@ var converter = new JTSK_Converter();
 
 const socket = new WebSocket("ws://localhost:12345");
 
-socket.onmessage = function(event) {
+socket.onopen = () => console.log('WebSocket connected');
+socket.onerror = (err) => console.error('WebSocket error:', err);
+socket.onclose = () => console.log('WebSocket closed');
+
+
+
+socket.onmessage = function (event) {
     const data = JSON.parse(event.data);
     console.log(data);
     var lat = data.latitude;
     var lon = data.longitude;
-    var centerMap=data.center_map;
+    var centerMap = data.center_map;
     const coordinateSystem = data.coordinate_system;
 
-    if(coordinateSystem=="S_JTSK")
-    {
-            var wgs = converter.JTSKtoWGS84(Math.abs(data.longitude), Math.abs(data.latitude)); // returns object {'lat', 'lon'}
-            lon=wgs.lon;
-            lat=wgs.lat;
-           // console.log(wgs);
+    if (coordinateSystem == "S_JTSK") {
+        var wgs = converter.JTSKtoWGS84(Math.abs(data.longitude), Math.abs(data.latitude)); // returns object {'lat', 'lon'}
+        lon = wgs.lon;
+        lat = wgs.lat;
+        // console.log(wgs);
     }
 
 
 
-    if (marker === null) {
-        // Create the marker the first time
-        marker = L.marker([lat, lon], {icon: greenIcon}).addTo(map);
-    } else {
-        // Update the marker's position
-        marker.setLatLng([lat, lon]);
+    startMarker(lat, lon);
+
+    if (centerMap) {
+        map.setView([lat, lon], 18);
     }
 
-    if(centerMap)
-    {
-    map.setView([lat, lon], 18);
-    }
 
 
 
@@ -83,7 +82,12 @@ socket.onmessage = function(event) {
 
 
 
+
+
+
+
 var map = L.map('map').setView([50.08, 14.41], 13);
+startMarker(50.08, 14.41);
 // Set up the OSM layer
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
@@ -92,10 +96,41 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 
 
 
+function startMarker(lat, lon) {
+    if (marker === null) {
+        // Create the marker the first time
+        marker = L.marker([lat, lon],
+            {
+                icon: greenIcon,
+                draggable: true,
+                autoPan: true // pans the map if you drag near the edge
+            }).addTo(map);
 
-  
-  
- 
+
+    }
+    else {
+        // Update the marker's position
+        marker.setLatLng([lat, lon]);
+    }
+}
+
+marker.on('dragend', (event) => {
+    const position = event.target.getLatLng();
+
+    const payload = {
+        center_map: true,
+        coordinate_system: "WGS84",
+        latitude: position.lat,
+        longitude: position.lng
+    };
+
+    if (socket.readyState === WebSocket.OPEN) {
+        socket.send(JSON.stringify(payload));
+    } else {
+        console.warn('WebSocket not open, could not send position');
+    }
+});
+
 
 
 var wgs = converter.JTSKtoWGS84(1104335.13, 707849.38); // returns object {'lat', 'lon'}
@@ -105,7 +140,7 @@ var wgs = converter.JTSKtoWGS84(1104335.13, 707849.38); // returns object {'lat'
 //$("#source").text(point);
 //proj4.defs( "EPSG:5514", "+title=Krovak +proj=krovak +lat_0=49.5 +lon_0=24.83333333333333 +alpha=30.28813972222222 +k=0.9999 +x_0=0 +y_0=0 +ellps=bessel +units=m +towgs84=570.8,85.7,462.8,4.998,1.587,5.261,3.56 +no_defs" );
 
-proj4.defs( "EPSG:5514", "+proj=longlat +datum=WGS84 +to +proj=krovak +lat_0=49.5 +lon_0=24.83333333333333  +alpha=30.28813972222222 +k=0.9999 +x_0=0 +y_0=0 +ellps=bessel  +pm=greenwich +units=m +no_defs  +towgs84=570.8,85.7,462.8,4.998,1.587,5.261,3.56" );
+proj4.defs("EPSG:5514", "+proj=longlat +datum=WGS84 +to +proj=krovak +lat_0=49.5 +lon_0=24.83333333333333  +alpha=30.28813972222222 +k=0.9999 +x_0=0 +y_0=0 +ellps=bessel  +pm=greenwich +units=m +no_defs  +towgs84=570.8,85.7,462.8,4.998,1.587,5.261,3.56");
 
 
 
@@ -117,7 +152,7 @@ znackyPole = vyparsovanyJson.polozky;
 var q = 0;
 var bounds = new L.LatLngBounds();
 for (var k = 0; k < znackyPole.length; k++) {
-   
+
 
     var souradnicovySystem = znackyPole[k].souradnicovySystem;
 
@@ -140,27 +175,31 @@ for (var k = 0; k < znackyPole.length; k++) {
             var coords2;
             if (souradnicovySystem == "WGS84") {
 
-                coords2osm=[cardData.lat ,cardData.lng];
-               
+                coords2osm = [cardData.lat, cardData.lng];
+
+
             }
             else {
-     
-                var testPoint=[cardData.lng,cardData.lat];
-               // coords2osm = proj4( "EPSG:5514" ).inverse( testPoint );
-               // console.log("krovak:");
-               // console.log(coords2osm);
-               // coords2osm=[coords2osm[0], coords2osm[1]   ];
-                
+
+                var testPoint = [cardData.lng, cardData.lat];
+                // coords2osm = proj4( "EPSG:5514" ).inverse( testPoint );
+                // console.log("krovak:");
+                // console.log(coords2osm);
+                // coords2osm=[coords2osm[0], coords2osm[1]   ];
+
 
                 var wgs84 = converter.JTSKtoWGS84(Math.abs(cardData.lng), Math.abs(cardData.lat)); // returns object {'x', 'y'}
                 console.log("wgs84");
                 console.log(wgs84);
-                coords2osm =  wgs84; //[wgs84.x, wgs84.y];
+                coords2osm = wgs84; //[wgs84.x, wgs84.y];
                 console.log("krovak2:");
                 console.log(coords2osm);
             }
-            
 
+            if(i==0)
+            {
+                startMarker(cardData.lat,cardData.lng);
+            }
 
             lineCoords.push(coords2);
 
@@ -169,80 +208,77 @@ for (var k = 0; k < znackyPole.length; k++) {
 
             /* vyrobit znacku */
 
-            var iconColor= {};
+            var iconColor = {};
 
-      
 
-            var cssmod="";
-            if(cardData.color=="#ff0000")
-                {
-                    cssmod='filter: hue-rotate(0deg);';
-                   
-                }
-                else if(cardData.color=="#0000ff")
-                {
-                    cssmod='filter: hue-rotate(229deg);';
-                }
-                else if(cardData.color=="#ffff00")
-                {
-                    cssmod='filter: hue-rotate(66deg);';
-                }
-                else
-                {                  
-                    cssmod='filter: hue-rotate(0deg);';
-                }
 
-           
+            var cssmod = "";
+            if (cardData.color == "#ff0000") {
+                cssmod = 'filter: hue-rotate(0deg);';
+
+            }
+            else if (cardData.color == "#0000ff") {
+                cssmod = 'filter: hue-rotate(229deg);';
+            }
+            else if (cardData.color == "#ffff00") {
+                cssmod = 'filter: hue-rotate(66deg);';
+            }
+            else {
+                cssmod = 'filter: hue-rotate(0deg);';
+            }
+
+
 
             // OSM
             if (znackyPole[k].vykresliBody) {
                 var customIcon = L.divIcon({
-                    html: '<div class="innerDiv" style="'+cssmod+'">'+cardData.kapka+'</div>',
+                    html: '<div class="innerDiv" style="' + cssmod + '">' + cardData.kapka + '</div>',
                     /* html: '<div class="innerDiv" style="color:'+cardData.color+'">'+cardData.kapka+'</div>',*/
                     className: 'markerCss' // Ensure no default class styles affect your custom icon
                 });
-                var markerosm = L.marker([cardData.lat, cardData.lng],{ icon: customIcon }).addTo(map);
-      
-                markerosm.bindPopup(cardData.title+cardData.cont);    
+                var markerosm = L.marker([cardData.lat, cardData.lng], { icon: customIcon }).addTo(map);
+
+                markerosm.bindPopup(cardData.title + cardData.cont);
                 bounds.extend(markerosm.getLatLng());
+               
             }
-          
+
 
             const polomer = 0.1;
 
             if (typeof cardData.radius !== 'undefined') {
-      
+
 
                 //OSM
                 if (znackyPole[k].vykresliRadius) {
-                    var kruznice=L.circle([cardData.lat, cardData.lng], {radius: cardData.radius}).addTo(map);
+                    var kruznice = L.circle([cardData.lat, cardData.lng], { radius: cardData.radius }).addTo(map);
                     bounds.extend(kruznice.getBounds());
-                }               
-   
+                }
+
 
 
             }
         }
-        
-            //OSM
-        
-            if (znackyPole[k].vykresliSpojnici) {
-                var polyline = L.polyline(lineCoordsOsm, {color: 'red'}).addTo(map);
-              //  map.fitBounds(polyline.getBounds());
-            }
 
-            if (znackyPole[k].vykresliPolygon) {
-                var polygon = L.polygon(lineCoordsOsm, {color: 'green'}).addTo(map);
-              //  map.fitBounds(polyline.getBounds());
-            }
+        //OSM
 
-            if (znackyPole[k].vykresliPolygonOut) {
-                var polygonOut = L.polygon(lineCoordsOsm, {color: 'yellow'}).addTo(map);
-              //  map.fitBounds(polyline.getBounds());
-            }
-     
+        if (znackyPole[k].vykresliSpojnici) {
+            var polyline = L.polyline(lineCoordsOsm, { color: 'red' }).addTo(map);
+            //  map.fitBounds(polyline.getBounds());
+        }
 
-            q = q + 1;
+        if (znackyPole[k].vykresliPolygon) {
+            var polygon = L.polygon(lineCoordsOsm, { color: 'green' }).addTo(map);
+            //  map.fitBounds(polyline.getBounds());
+        }
+
+        if (znackyPole[k].vykresliPolygonOut) {
+            var polygonOut = L.polygon(lineCoordsOsm, { color: 'yellow' }).addTo(map);
+            //  map.fitBounds(polyline.getBounds());
+        }
+
+
+        q = q + 1;
 
     }
     else {
@@ -272,10 +308,10 @@ box.innerHTML = vyparsovanyJson.popis;
 box.id = "boxik";
 //mapa.getContainer().appendChild(box);
 
-var mapddiv= document.getElementById("map");
+var mapddiv = document.getElementById("map");
 mapddiv.style.zIndex = "1";
 
-var wrapperdiv= document.getElementById("wrapper");
+var wrapperdiv = document.getElementById("wrapper");
 wrapperdiv.appendChild(box);
 box.style.zIndex = "2";
 

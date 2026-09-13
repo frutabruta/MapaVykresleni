@@ -13,7 +13,7 @@ class TrajectoryJumper : public QObject
 public:
     TrajectoryJumper();
 
-    GNSSWebSocketServer gnssWebSockerServer;
+    GNSSWebSocketServer gnssWebSocketServer;
     CoordinatesTools coordinatesTools;
 
     QVector<MapaBod> seznamMapaBodu;
@@ -63,6 +63,7 @@ signals:
 private slots:
     void arrivedAtStop();
 
+    void slotReceivedWebSocketPosition(double latitude, double longitude, bool centerMap);
 private:
     void departedFromStop();
     void setMapaBod(MapaBod currentSubPoint);
